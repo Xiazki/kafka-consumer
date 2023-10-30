@@ -4,28 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6a0b59c-cd85-4b5d-8d0a-01a5bb892142" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/config/Config.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/dispatcher/RecordDispatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/MessageExecutorService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueSizeCoordinator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/rebalance/QueueReBalance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OffsetService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OrderlyProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/Processor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/PullService.java" afterDir="false" />
+    <list default="true" id="d6a0b59c-cd85-4b5d-8d0a-01a5bb892142" name="Changes" comment="feat：定义模型，初始化各个模块的代码">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Executor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RecoverCallback.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryContext.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryPolicy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryTemplate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/RecordData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/MessageExecutorService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/MessageExecutorService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueSizeCoordinator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/QueueSizeCoordinator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OrderlyProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OrderlyProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/Processor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/Processor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,9 +57,30 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.xiazki.kafka.executor.Test" />
+      <module name="kafka-consumer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.xiazki.kafka.executor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Test" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -72,6 +90,18 @@
       <option name="presentableId" value="Default" />
       <updated>1697266928231</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat：定义模型，初始化各个模块的代码">
+      <created>1697370464658</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1697370464658</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat：定义模型，初始化各个模块的代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat：定义模型，初始化各个模块的代码" />
   </component>
 </project>

@@ -23,11 +23,9 @@ public class QueueManager {
      * 获取队列
      *
      * @param queueId 队列id
-     * @param <K>     消息key
-     * @param <V>     消息value
      * @return 队列
      */
-    public <K, V> RecordQueue<K, V> getQueue(String queueId) {
+    public RecordQueue getQueue(String queueId) {
         return null;
     }
 

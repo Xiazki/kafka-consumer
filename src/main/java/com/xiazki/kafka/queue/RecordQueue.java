@@ -1,5 +1,6 @@
 package com.xiazki.kafka.queue;
 
+import com.xiazki.kafka.service.RecordData;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.List;
@@ -7,16 +8,16 @@ import java.util.List;
 /**
  * 队列
  */
-public class RecordQueue<K, V> {
+public class RecordQueue {
 
     private String queueId;
 
-    public List<ConsumerRecord<K, V>> poll(Integer size) {
+    public RecordData<?, ?> poll(Integer size) {
         return null;
     }
 
 
-    public void add(ConsumerRecord<K, V> record) {
+    public void add(ConsumerRecord<?, ?> record) {
 
     }
 

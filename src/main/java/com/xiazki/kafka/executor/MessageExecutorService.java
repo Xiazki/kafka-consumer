@@ -8,25 +8,27 @@ import java.util.List;
 
 public class MessageExecutorService {
 
-
     private QueueManager queueManager;
 
-    private Processor<?, ?> processor;
+    private Processor processor;
 
-    public MessageExecutorService(QueueManager queueManager, Processor<?, ?> processor) {
+    private int processBatchSize;
+
+    public MessageExecutorService(QueueManager queueManager, Processor processor, int processBatchSize) {
         this.queueManager = queueManager;
         this.processor = processor;
+        this.processBatchSize = processBatchSize;
     }
 
     public void start() {
 
     }
 
-    public void createWorker(RecordQueue<?, ?> queue) {
+    public void createWorker(RecordQueue queue) {
 
     }
 
-    public List<Worker<?, ?>> getAllWorkers() {
+    public List<Worker> getAllWorkers() {
         return null;
     }
 

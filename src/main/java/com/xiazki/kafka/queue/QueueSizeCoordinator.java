@@ -11,7 +11,7 @@ public class QueueSizeCoordinator {
     public void require(int size) {
     }
 
-    public void release() {
+    public void release(int size) {
     }
 
 }

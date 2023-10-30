@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MultiThreadConsumer<K, V> {
 
-    private Processor<K, V> processor;
+    private Processor processor;
 
     private KafkaConsumer<K, V> consumer;
 
@@ -33,7 +33,7 @@ public class MultiThreadConsumer<K, V> {
      * @param config
      * @param processor
      */
-    public MultiThreadConsumer(Config config, Processor<K, V> processor) {
+    public MultiThreadConsumer(Config config, Processor processor) {
         //初始化kafka consumer
         consumer = new KafkaConsumer<>(config.getProperties());
         //初始化队列
@@ -43,9 +43,13 @@ public class MultiThreadConsumer<K, V> {
         //初始化拉服务
         pullService = new PullService<>(consumer, recordDispatcher);
         //初始化执行线程池
-        messageExecutorService = new MessageExecutorService(queueManager, processor);
+        messageExecutorService = new MessageExecutorService(queueManager, processor,config.getProcessBatchSize());
         //初始化位点管理服务
         offsetService = new OffsetService(messageExecutorService);
+    }
+
+    public KafkaConsumer<K, V> getConsumer() {
+        return consumer;
     }
 
     public synchronized void start(List<String> topics) {
