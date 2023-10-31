@@ -1,5 +1,7 @@
 package com.xiazki.kafka.config;
 
+import com.xiazki.kafka.failover.RetryConfig;
+
 import java.util.Properties;
 
 /**
@@ -26,6 +28,8 @@ public class Config {
      * 默认处理的一批处理的数量
      */
     private Integer processBatchSize = 1;
+
+    private RetryConfig retryConfig = new RetryConfig();
 
     public Properties getProperties() {
         return properties;
@@ -57,5 +61,13 @@ public class Config {
 
     public void setProcessBatchSize(Integer processBatchSize) {
         this.processBatchSize = processBatchSize;
+    }
+
+    public RetryConfig getRetryConfig() {
+        return retryConfig;
+    }
+
+    public void setRetryConfig(RetryConfig retryConfig) {
+        this.retryConfig = retryConfig;
     }
 }

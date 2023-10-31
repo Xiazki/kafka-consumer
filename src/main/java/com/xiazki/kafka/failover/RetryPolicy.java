@@ -11,9 +11,9 @@ public interface RetryPolicy {
     <K, V> boolean canRetry(RetryContext<K, V> retryContext);
 
     /**
-     * 获取重试时间间隔
+     * 获取重试最大时间
      *
-     * @return 重试间隔 毫秒级别
+     * @return 尝试重试最大时间 毫秒级别
      */
-    long getInterval();
+    long getRetryTime();
 }

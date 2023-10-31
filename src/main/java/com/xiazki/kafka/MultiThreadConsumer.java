@@ -43,7 +43,7 @@ public class MultiThreadConsumer<K, V> {
         //初始化拉服务
         pullService = new PullService<>(consumer, recordDispatcher);
         //初始化执行线程池
-        messageExecutorService = new MessageExecutorService(queueManager, processor,config.getProcessBatchSize());
+        messageExecutorService = new MessageExecutorService(queueManager, processor, config.getRetryConfig(), config.getProcessBatchSize());
         //初始化位点管理服务
         offsetService = new OffsetService(messageExecutorService);
     }

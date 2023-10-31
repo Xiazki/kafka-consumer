@@ -1,5 +1,6 @@
 package com.xiazki.kafka.executor;
 
+import com.xiazki.kafka.failover.RetryTemplate;
 import com.xiazki.kafka.queue.RecordQueue;
 import com.xiazki.kafka.service.Processor;
 import com.xiazki.kafka.queue.QueueSizeCoordinator;
@@ -8,17 +9,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.List;
 
-public class Worker<K,V> extends Thread {
+public class Worker extends Thread {
 
     /**
      * 处理队列
      */
     private RecordQueue recordQueue;
-
-    /**
-     * 处理器
-     */
-    private Processor processor;
 
     /**
      * 最近处理的记录
@@ -28,30 +24,46 @@ public class Worker<K,V> extends Thread {
     private QueueSizeCoordinator queueSizeCoordinator;
 
 
-    private int processSize;
+    private int processBatchSize;
 
     private volatile boolean running = true;
 
-    public Worker(RecordQueue recordQueue, Processor processor, QueueSizeCoordinator queueSizeCoordinator, int processSize) {
+    private RetryTemplate retryTemplate;
+
+    public Worker(RecordQueue recordQueue, QueueSizeCoordinator queueSizeCoordinator, int processBatchSize, RetryTemplate retryTemplate) {
         this.recordQueue = recordQueue;
-        this.processor = processor;
         this.queueSizeCoordinator = queueSizeCoordinator;
-        this.processSize = processSize;
+        this.processBatchSize = processBatchSize;
+        this.retryTemplate = retryTemplate;
     }
 
     @Override
     public void run() {
-
         while (running) {
-            RecordData<?, ?> consumerRecords = recordQueue.poll(processSize);
-            //todo 处理模型 failover 机制
-            processor.process(consumerRecords);
-//            queueSizeCoordinator.release(consumerRecords.size());
-//            leastRecord = consumerRecords.get(consumerRecords.size() - 1);
+            RecordData<?, ?> consumerRecords = recordQueue.poll(processBatchSize);
+            retryTemplate.execute(consumerRecords);
+            this.leastRecord = calcLastRecord(consumerRecords);
         }
     }
 
     public void close() {
         this.running = false;
+    }
+
+    /**
+     * 获取上次成功的记录
+     *
+     * @return 消息记录
+     */
+    public ConsumerRecord<?, ?> getLeastRecord() {
+        return leastRecord;
+    }
+
+    private ConsumerRecord<?, ?> calcLastRecord(RecordData<?, ?> consumerRecords) {
+        List<? extends ConsumerRecord<?, ?>> records = consumerRecords.getRecords();
+        if (records == null || records.size() == 0) {
+            return null;
+        }
+        return records.get(records.size() - 1);
     }
 }

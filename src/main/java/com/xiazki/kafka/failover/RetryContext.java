@@ -1,12 +1,13 @@
 package com.xiazki.kafka.failover;
 
+import com.xiazki.kafka.service.RecordData;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.util.List;
 
 public class RetryContext<K, V> {
 
-    private List<ConsumerRecord<K, V>> recordList;
+    private RecordData<K, V> record;
 
     private Throwable throwable;
 
@@ -14,13 +15,12 @@ public class RetryContext<K, V> {
 
     private long retryTime;
 
-
-    public List<ConsumerRecord<K, V>> getRecordList() {
-        return recordList;
+    public RecordData<K, V> getRecord() {
+        return record;
     }
 
-    public void setRecordList(List<ConsumerRecord<K, V>> recordList) {
-        this.recordList = recordList;
+    public void setRecord(RecordData<K, V> record) {
+        this.record = record;
     }
 
     public Throwable getThrowable() {
