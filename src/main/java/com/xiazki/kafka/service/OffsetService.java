@@ -10,7 +10,7 @@ public class OffsetService {
         this.messageExecutorService = messageExecutorService;
     }
 
-    public void destory(){
+    public void destroy(){
 
     }
 

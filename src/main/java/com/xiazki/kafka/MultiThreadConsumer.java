@@ -5,7 +5,6 @@ import com.xiazki.kafka.dispatcher.RecordDispatcher;
 import com.xiazki.kafka.executor.MessageExecutorService;
 import com.xiazki.kafka.queue.QueueManager;
 import com.xiazki.kafka.service.OffsetService;
-import com.xiazki.kafka.service.OrderlyProcessor;
 import com.xiazki.kafka.service.Processor;
 import com.xiazki.kafka.service.PullService;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -24,7 +23,7 @@ public class MultiThreadConsumer<K, V> {
 
     private MessageExecutorService messageExecutorService;
 
-    private RecordDispatcher<K, V> recordDispatcher;
+    private RecordDispatcher recordDispatcher;
 
     private OffsetService offsetService;
 
@@ -39,7 +38,7 @@ public class MultiThreadConsumer<K, V> {
         //初始化队列
         queueManager = new QueueManager(config.getThreadNum(), config.getMaxMessageNum());
         //初始化分发器
-        recordDispatcher = new RecordDispatcher<>(queueManager, processor instanceof OrderlyProcessor);
+        recordDispatcher = new RecordDispatcher(queueManager, processor);
         //初始化拉服务
         pullService = new PullService<>(consumer, recordDispatcher);
         //初始化执行线程池
@@ -58,19 +57,20 @@ public class MultiThreadConsumer<K, V> {
             pullService.start();
             messageExecutorService.start();
         } catch (Throwable throwable) {
-            destory();
+            destroy();
         }
     }
 
-    public synchronized void destory() {
+    public synchronized void destroy() {
 
         try {
-            pullService.destory();
-            offsetService.destory();
-            queueManager.destory();
-            messageExecutorService.destory();
+            pullService.destroy();
+            offsetService.destroy();
+            queueManager.destroy();
+            messageExecutorService.destroy();
         } catch (Throwable e) {
 
+            //todo 日志
         } finally {
             consumer.close();
             pullService = null;

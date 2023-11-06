@@ -40,7 +40,7 @@ public class MessageExecutorService {
         return workers;
     }
 
-    public synchronized void destory() {
+    public synchronized void destroy() {
         for (Worker worker : workers) {
             worker.close();
         }

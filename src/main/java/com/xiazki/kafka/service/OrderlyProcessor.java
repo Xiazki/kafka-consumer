@@ -10,7 +10,5 @@ public interface OrderlyProcessor extends Processor {
      * @param record 消息
      * @return 分区值
      */
-    default <K, V> String getPartitionValue(ConsumerRecord<K, V> record) {
-        return null;
-    }
+    <K, V> String getPartitionValue(ConsumerRecord<K, V> record);
 }
