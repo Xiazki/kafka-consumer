@@ -7,7 +7,10 @@ import com.xiazki.kafka.queue.QueueSizeCoordinator;
 import com.xiazki.kafka.service.RecordData;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Worker extends Thread {
 
@@ -21,6 +24,7 @@ public class Worker extends Thread {
      */
     private ConsumerRecord<?, ?> leastRecord;
 
+    private Map<String, ConsumerRecord<?, ?>> leastRecordMap = new HashMap<>();
     private QueueSizeCoordinator queueSizeCoordinator;
 
 
@@ -42,12 +46,13 @@ public class Worker extends Thread {
         while (running) {
             RecordData<?, ?> consumerRecords = recordQueue.poll(processBatchSize);
             retryTemplate.execute(consumerRecords);
-            this.leastRecord = calcLastRecord(consumerRecords);
+            calcLastRecord(consumerRecords);
         }
     }
 
     public void close() {
         this.running = false;
+        retryTemplate.terminate();
     }
 
     /**
@@ -59,11 +64,17 @@ public class Worker extends Thread {
         return leastRecord;
     }
 
-    private ConsumerRecord<?, ?> calcLastRecord(RecordData<?, ?> consumerRecords) {
+    public Map<String, ConsumerRecord<?, ?>> getLeastRecordMap() {
+        return leastRecordMap;
+    }
+
+
+    private void calcLastRecord(RecordData<?, ?> consumerRecords) {
         List<? extends ConsumerRecord<?, ?>> records = consumerRecords.getRecords();
         if (records == null || records.size() == 0) {
-            return null;
+            return;
         }
-        return records.get(records.size() - 1);
+        Map<String, ? extends ConsumerRecord<?, ?>> map = records.stream().collect(Collectors.toMap(record -> record.topic() + "-" + record.partition(), o -> o, (o1, o2) -> o2));
+        leastRecordMap.putAll(map);
     }
 }

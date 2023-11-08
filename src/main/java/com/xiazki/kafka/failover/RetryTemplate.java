@@ -14,6 +14,8 @@ public class RetryTemplate {
 
     private Processor processor;
 
+    private boolean running = true;
+
 
     public RetryTemplate(RetryConfig config, Processor processor) {
         this.retryConfig = config;
@@ -39,7 +41,7 @@ public class RetryTemplate {
         int retryCount = 0;
         boolean success = false;
         TimeWaiter timeWaiter = new TimeWaiter();
-        while (retryPolicy.canRetry(retryContext)) {
+        while (retryPolicy.canRetry(retryContext) && running) {
             long executeStartTime = System.currentTimeMillis();
             try {
                 processor.process(record);
@@ -60,6 +62,10 @@ public class RetryTemplate {
         if (!success && recoverCallback != null) {
             recoverCallback.recover(retryContext);
         }
+    }
+
+    public void terminate() {
+        this.running = false;
     }
 
     public RetryPolicy getRetryPolicy() {
