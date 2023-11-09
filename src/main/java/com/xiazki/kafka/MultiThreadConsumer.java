@@ -44,7 +44,7 @@ public class MultiThreadConsumer<K, V> {
         //初始化执行线程池
         messageExecutorService = new MessageExecutorService(queueManager, processor, config.getRetryConfig(), config.getProcessBatchSize());
         //初始化位点管理服务
-        offsetService = new OffsetService(messageExecutorService);
+        offsetService = new OffsetService(messageExecutorService, consumer);
     }
 
     public KafkaConsumer<K, V> getConsumer() {

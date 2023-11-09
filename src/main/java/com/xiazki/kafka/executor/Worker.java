@@ -6,6 +6,7 @@ import com.xiazki.kafka.service.Processor;
 import com.xiazki.kafka.queue.QueueSizeCoordinator;
 import com.xiazki.kafka.service.RecordData;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.TopicPartition;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,16 @@ public class Worker extends Thread {
     private RecordQueue recordQueue;
 
     /**
-     * 最近处理的记录
+     * 正在处理的记录
      */
-    private ConsumerRecord<?, ?> leastRecord;
+    private Map<TopicPartition, ConsumerRecord<?, ?>> processingRecordMap = new HashMap<>();
 
-    private Map<String, ConsumerRecord<?, ?>> leastRecordMap = new HashMap<>();
+    /**
+     * 记录最近处理成功的记录
+     */
+    private Map<TopicPartition, ConsumerRecord<?, ?>> leastRecordMap = new HashMap<>();
+
+
     private QueueSizeCoordinator queueSizeCoordinator;
 
 
@@ -45,8 +51,10 @@ public class Worker extends Thread {
     public void run() {
         while (running) {
             RecordData<?, ?> consumerRecords = recordQueue.poll(processBatchSize);
+            Map<TopicPartition, ConsumerRecord<?, ?>> map = calcLastRecord(consumerRecords);
+            processingRecordMap = map;
             retryTemplate.execute(consumerRecords);
-            calcLastRecord(consumerRecords);
+            leastRecordMap = map;
         }
     }
 
@@ -55,26 +63,23 @@ public class Worker extends Thread {
         retryTemplate.terminate();
     }
 
-    /**
-     * 获取上次成功的记录
-     *
-     * @return 消息记录
-     */
-    public ConsumerRecord<?, ?> getLeastRecord() {
-        return leastRecord;
-    }
-
-    public Map<String, ConsumerRecord<?, ?>> getLeastRecordMap() {
+    public Map<TopicPartition, ConsumerRecord<?, ?>> getLeastRecordMap() {
         return leastRecordMap;
     }
 
+    public Map<TopicPartition, ConsumerRecord<?, ?>> getProcessingRecordMap() {
+        return processingRecordMap;
+    }
 
-    private void calcLastRecord(RecordData<?, ?> consumerRecords) {
+    public void setProcessingRecordMap(Map<TopicPartition, ConsumerRecord<?, ?>> processingRecordMap) {
+        this.processingRecordMap = processingRecordMap;
+    }
+
+    private Map<TopicPartition, ConsumerRecord<?, ?>> calcLastRecord(RecordData<?, ?> consumerRecords) {
         List<? extends ConsumerRecord<?, ?>> records = consumerRecords.getRecords();
         if (records == null || records.size() == 0) {
-            return;
+            return null;
         }
-        Map<String, ? extends ConsumerRecord<?, ?>> map = records.stream().collect(Collectors.toMap(record -> record.topic() + "-" + record.partition(), o -> o, (o1, o2) -> o2));
-        leastRecordMap.putAll(map);
+        return records.stream().collect(Collectors.toMap(record -> new TopicPartition(record.topic(), record.partition()), o -> o, (o1, o2) -> o2));
     }
 }

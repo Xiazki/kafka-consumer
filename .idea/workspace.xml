@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d6a0b59c-cd85-4b5d-8d0a-01a5bb892142" name="Changes" comment="feat：定义模型，初始化各个模块的代码">
+    <list default="true" id="d6a0b59c-cd85-4b5d-8d0a-01a5bb892142" name="Changes" comment="feat：位点提交相关逻辑">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/AckData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryTemplate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/failover/RetryTemplate.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OffsetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OffsetService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,12 +99,20 @@
       <option name="project" value="LOCAL" />
       <updated>1698733452316</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat：位点提交相关逻辑">
+      <created>1699456770569</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1699456770569</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat：定义模型，初始化各个模块的代码" />
     <MESSAGE value="feat：添加重试策略和执行逻辑" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat：添加重试策略和执行逻辑" />
+    <MESSAGE value="feat：位点提交相关逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat：位点提交相关逻辑" />
   </component>
 </project>
