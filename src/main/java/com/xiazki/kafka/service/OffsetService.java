@@ -41,37 +41,52 @@ public class OffsetService extends Thread {
                     new TimeWaiter().waitTime(100);
                     continue;
                 }
-                List<Map<TopicPartition, ConsumerRecord<?, ?>>> processingList = new ArrayList<>();
-                List<Map<TopicPartition, ConsumerRecord<?, ?>>> leastList = new ArrayList<>();
+                List<Map<TopicPartition, Long>> queueList = new ArrayList<>();
+                List<Map<TopicPartition, Long>> processingList = new ArrayList<>();
+                List<Map<TopicPartition, Long>> leastList = new ArrayList<>();
                 for (Worker worker : allWorkers) {
-                    Map<TopicPartition, ConsumerRecord<?, ?>> processingRecordMap = worker.getProcessingRecordMap();
+                    Map<TopicPartition, Long> processingRecordMap = worker.getProcessingRecordMap();
                     if (processingRecordMap != null) {
                         processingList.add(processingRecordMap);
                     }
-                    Map<TopicPartition, ConsumerRecord<?, ?>> leastRecordMap = worker.getLeastRecordMap();
+                    Map<TopicPartition, Long> leastRecordMap = worker.getLeastRecordMap();
                     if (leastRecordMap != null) {
                         leastList.add(leastRecordMap);
                     }
+                    Map<TopicPartition, Long> queueMinOffsetMap = worker.getQueueMinOffsetMap();
+                    if (queueMinOffsetMap != null) {
+                        queueList.add(queueMinOffsetMap);
+                    }
                 }
 
+
+                consumer.commitAsync();
             } catch (Throwable throwable) {
 
             }
         }
     }
 
-    public Map<TopicPartition, Long> minOffset(List<Map<TopicPartition, ConsumerRecord<?, ?>>> list) {
+
+    public Map<TopicPartition, Long> calcCommitOffset(List<Map<TopicPartition, Long>> queueList, List<Map<TopicPartition, Long>> processingList, List<Map<TopicPartition, Long>> leastList) {
+        Map<TopicPartition, Long> queueMinMap = minOffset(queueList);
+        Map<TopicPartition, Long> processingMinMap = minOffset(processingList);
+        return null;
+    }
+
+
+    public Map<TopicPartition, Long> minOffset(List<Map<TopicPartition, Long>> list) {
         if (list == null || list.isEmpty()) {
             return null;
         }
         Map<TopicPartition, Long> minOffsetMap = new HashMap<>();
-        for (Map<TopicPartition, ConsumerRecord<?, ?>> map : list) {
+        for (Map<TopicPartition, Long> map : list) {
             map.forEach((topicPartition, record) -> {
                 Long offset = minOffsetMap.get(topicPartition);
                 AckData ackData = notAckOffsetMap.get(topicPartition);
 
-                if (ackData == null || record.offset() <= offset) {
-                    minOffsetMap.put(topicPartition, offset);
+                if (ackData == null || record <= offset) {
+                    minOffsetMap.put(topicPartition, record);
                 }
             });
         }

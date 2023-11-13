@@ -19,7 +19,6 @@ public class RecordQueue {
 
     private BlockingQueue<ConsumerRecord<?, ?>> queue;
 
-    private Map<TopicPartition, Long> minOffsetMap = new HashMap<>();
 
     public RecordQueue(String queueId) {
         this.queueId = queueId;
@@ -37,13 +36,23 @@ public class RecordQueue {
         }
         queue.add(record);
         TopicPartition topicPartition = new TopicPartition(record.topic(), record.partition());
-        Long offset = minOffsetMap.get(topicPartition);
-        if (offset == null || record.offset() < offset) {
-            minOffsetMap.put(topicPartition, offset);
+    }
+
+
+    public Map<TopicPartition, Long> getMinOffsetMap() {
+        Map<TopicPartition, Long> minOffsetMap = new HashMap<>();
+        for (ConsumerRecord<?, ?> consumerRecord : queue) {
+            TopicPartition topicPartition = new TopicPartition(consumerRecord.topic(), consumerRecord.partition());
+            Long offset = minOffsetMap.get(topicPartition);
+            if (offset == null || offset >= consumerRecord.offset()) {
+                minOffsetMap.put(topicPartition, consumerRecord.offset());
+            }
         }
+        return minOffsetMap;
     }
 
     public void clear() {
 
+        queue.clear();
     }
 }

@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d6a0b59c-cd85-4b5d-8d0a-01a5bb892142" name="Changes" comment="feat：位点提交相关逻辑">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/AckData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/MultiThreadConsumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/executor/Worker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/queue/RecordQueue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OffsetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/xiazki/kafka/service/OffsetService.java" afterDir="false" />
@@ -106,7 +104,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699456770569</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat：位点提交相关逻辑">
+      <created>1699540594987</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1699540594987</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

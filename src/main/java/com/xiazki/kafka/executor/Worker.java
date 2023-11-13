@@ -23,12 +23,12 @@ public class Worker extends Thread {
     /**
      * 正在处理的记录
      */
-    private Map<TopicPartition, ConsumerRecord<?, ?>> processingRecordMap = new HashMap<>();
+    private Map<TopicPartition, Long> processingRecordMap = new HashMap<>();
 
     /**
      * 记录最近处理成功的记录
      */
-    private Map<TopicPartition, ConsumerRecord<?, ?>> leastRecordMap = new HashMap<>();
+    private Map<TopicPartition, Long> leastRecordMap = new HashMap<>();
 
 
     private QueueSizeCoordinator queueSizeCoordinator;
@@ -51,7 +51,7 @@ public class Worker extends Thread {
     public void run() {
         while (running) {
             RecordData<?, ?> consumerRecords = recordQueue.poll(processBatchSize);
-            Map<TopicPartition, ConsumerRecord<?, ?>> map = calcLastRecord(consumerRecords);
+            Map<TopicPartition, Long> map = calcLastRecord(consumerRecords);
             processingRecordMap = map;
             retryTemplate.execute(consumerRecords);
             leastRecordMap = map;
@@ -63,23 +63,24 @@ public class Worker extends Thread {
         retryTemplate.terminate();
     }
 
-    public Map<TopicPartition, ConsumerRecord<?, ?>> getLeastRecordMap() {
+    public Map<TopicPartition, Long> getLeastRecordMap() {
         return leastRecordMap;
     }
 
-    public Map<TopicPartition, ConsumerRecord<?, ?>> getProcessingRecordMap() {
+    public Map<TopicPartition, Long> getProcessingRecordMap() {
         return processingRecordMap;
     }
 
-    public void setProcessingRecordMap(Map<TopicPartition, ConsumerRecord<?, ?>> processingRecordMap) {
-        this.processingRecordMap = processingRecordMap;
+    public Map<TopicPartition, Long> getQueueMinOffsetMap() {
+        return recordQueue.getMinOffsetMap();
     }
 
-    private Map<TopicPartition, ConsumerRecord<?, ?>> calcLastRecord(RecordData<?, ?> consumerRecords) {
+
+    private Map<TopicPartition, Long> calcLastRecord(RecordData<?, ?> consumerRecords) {
         List<? extends ConsumerRecord<?, ?>> records = consumerRecords.getRecords();
         if (records == null || records.size() == 0) {
             return null;
         }
-        return records.stream().collect(Collectors.toMap(record -> new TopicPartition(record.topic(), record.partition()), o -> o, (o1, o2) -> o2));
+        return records.stream().collect(Collectors.toMap(record -> new TopicPartition(record.topic(), record.partition()), ConsumerRecord::offset, (o1, o2) -> o2));
     }
 }
